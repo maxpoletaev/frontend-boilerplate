@@ -1,0 +1,49 @@
+$grid ?= {
+  gutter:  20px
+  columns: 12
+  padding: 0
+}
+
+
+.l-grid
+  &:after
+    content: " "
+    display: table
+    clear: both
+    height: 0
+
+
+.l-grid__unit
+  float: left
+  box-sizing: border-box
+  border-left: $grid.gutter solid transparent
+  padding-left: ($grid.padding / 2)
+  padding-right: ($grid.padding / 2)
+
+  &:first-child
+    border-left-width: 0
+
+  &_layout_split
+    border-left-width: 0
+    padding-right: 0
+    padding-left: 0
+
+  &_align_left
+    float: left
+
+  &_align_right
+    float: right
+
+  &_align_center
+    float: none
+    margin-left: auto
+    margin-right: auto
+
+
+for $column in 1..$grid.columns
+  
+  .l-grid__unit_col_{$column}
+    width: unit(($column / $grid.columns) * 100, '%')
+
+  .l-grid__unit_prefix_{$column}
+    margin-left: unit(($column / $grid.columns) * 100, '%')

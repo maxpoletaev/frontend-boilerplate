@@ -1,0 +1,22 @@
+{
+  "name": "frontend-boilerplate",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "dependencies": {
+    "gulp": "~3.5.0",
+    "gulp-beml": "~0.0.0",
+    "gulp-ejs": "~0.1.2",
+    "gulp-concat": "~2.1.7",
+    "gulp-livereload": "~1.1.1",
+    "gulp-rename": "~0.2.2",
+    "gulp-stylus": "~0.0.12",
+    "gulp-uglify": "~0.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maxim Shkalin <dt5@bk.ru> (http://zenwalker.ru/)",
+  "license": "MIT"
+}
