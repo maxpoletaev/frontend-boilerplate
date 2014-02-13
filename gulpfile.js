@@ -1,11 +1,11 @@
-var gulp       = require('gulp');
-var beml       = require('gulp-beml');
-var ejs        = require('gulp-ejs');
-var rename     = require('gulp-rename');
-var concat     = require('gulp-concat');
-var stylus     = require('gulp-stylus');
-var uglify     = require('gulp-uglify');
-var livereload = require('gulp-livereload');
+var gulp = require('gulp');
+  , beml = require('gulp-beml')
+  , ejs = require('gulp-ejs')
+  , rename = require('gulp-rename')
+  , concat = require('gulp-concat')
+  , stylus = require('gulp-stylus')
+  , uglify = require('gulp-uglify')
+  , livereload = require('gulp-livereload');
 
 /**
  * Configuration
@@ -24,7 +24,7 @@ var paths = {
     blocks: ['src/blocks/**/*.js'],
     libs:   ['src/vendor/**/*.js']
   }
-}
+};
 
 /**
  * Tasks
