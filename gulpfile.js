@@ -1,6 +1,7 @@
-var gulp = require('gulp')
-  , beml = require('gulp-beml')
+var fs = require('fs')
+  , gulp = require('gulp')
   , ejs = require('gulp-ejs')
+  , beml = require('gulp-beml')
   , rename = require('gulp-rename')
   , concat = require('gulp-concat')
   , stylus = require('gulp-stylus')
@@ -27,13 +28,17 @@ var paths = {
   }
 };
 
+var data = fs.existsSync('src/data.json')
+  ? JSON.parse(fs.readFileSync('src/data.json'))
+  : {};
+
 /**
  * Tasks
  */
 
 gulp.task('pages', function() {
   gulp.src(paths.pages.common)
-    .pipe(ejs())
+    .pipe(ejs(data))
     .pipe(beml())
     .pipe(rename(function(dir, base, ext) {
       return '../' + base + ext;
