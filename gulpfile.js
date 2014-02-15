@@ -1,4 +1,4 @@
-var gulp = require('gulp');
+var gulp = require('gulp')
   , beml = require('gulp-beml')
   , ejs = require('gulp-ejs')
   , rename = require('gulp-rename')
@@ -22,7 +22,8 @@ var paths = {
   },
   scripts: {
     blocks: ['src/blocks/**/*.js'],
-    libs:   ['src/vendor/**/*.js']
+    libs:   ['src/vendor/**/*.js'],
+    app:    ['src/app/**/*.js']
   }
 };
 
@@ -40,37 +41,44 @@ gulp.task('pages', function() {
     .pipe(gulp.dest('build/pages'));
 });
 
-gulp.task('styles.common', function() {
+gulp.task('common.styles', function() {
   gulp.src(paths.styles.common)
     .pipe(stylus({ use: ['nib'] }))
     .pipe(concat('common.css'))
     .pipe(gulp.dest('build/css'));
 });
 
-gulp.task('styles.blocks', function() {
+gulp.task('blocks.styles', function() {
   gulp.src(paths.styles.blocks)
     .pipe(stylus({ use: ['nib'] }))
     .pipe(concat('blocks.css'))
     .pipe(gulp.dest('build/css'));
 });
 
-gulp.task('styles.libs', function() {
+gulp.task('blocks.scripts', function() {
+  gulp.src(paths.scripts.blocks)
+    .pipe(concat('blocks.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('libs.styles', function() {
   gulp.src(paths.styles.libs)
     .pipe(stylus({ use: ['nib'] }))
     .pipe(concat('libs.css'))
     .pipe(gulp.dest('build/css'));
 });
 
-gulp.task('scripts.libs', function() {
+gulp.task('libs.scripts', function() {
   gulp.src(paths.scripts.libs)
     .pipe(concat('libs.js'))
     .pipe(uglify())
     .pipe(gulp.dest('build/js'));
 });
 
-gulp.task('scripts.blocks', function() {
-  gulp.src(paths.scripts.blocks)
-    .pipe(concat('blocks.js'))
+gulp.task('app.scripts', function() {
+  gulp.src(paths.scripts.app)
+    .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(gulp.dest('build/js'));
 });
@@ -80,15 +88,28 @@ gulp.task('scripts.blocks', function() {
  */
 
 gulp.task('default', [
-  'pages', 'styles.common', 'styles.blocks', 'styles.libs', 'scripts.libs', 'scripts.blocks'
+  'pages',
+  'common.styles',
+  'blocks.styles',
+  'blocks.scripts',
+  'libs.styles',
+  'libs.scripts',
+  'app.scripts'
 ]);
 
 gulp.task('blocks', [
-  'pages', 'styles.blocks', 'scripts.blocks'
+  'pages',
+  'blocks.styles',
+  'blocks.scripts'
 ]);
 
 gulp.task('libs', [
-  'styles.libs', 'scripts.libs'
+  'libs.styles',
+  'libs.scripts'
+]);
+
+gulp.task('app', [
+  'app.scripts'
 ]);
 
 /**
@@ -104,15 +125,18 @@ gulp.task('watch', function() {
   });
 
   gulp.watch('src/common/*.styl', function() {
-    gulp.run('styles.common');
+    gulp.run('common.styles');
   });
 
   gulp.watch('src/blocks/**/*.styl', function() {
-    gulp.run('styles.blocks');
+    gulp.run('blocks.styles');
   });
 
   gulp.watch('src/blocks/**/*.js', function() {
-    gulp.run('scripts.blocks');
+    gulp.run('blocks.scripts');
   });
 
+  gulp.watch('src/app/**/*.js', function() {
+    gulp.run('app.scripts');
+  });
 });
