@@ -17,9 +17,10 @@ var paths = {
     common: ['src/pages/**/*.html']
   },
   styles: {
-    common: ['src/common/*.styl'],
-    blocks: ['src/blocks/**/*.styl'],
-    libs:   ['src/vendor/**/*.styl']
+    common: ['src/common/*.styl',    '!src/common/*.ie.styl'],
+    blocks: ['src/blocks/**/*.styl', '!src/blocks/*.ie.styl'],
+    ie:     ['src/common/*.ie.styl', 'src/blocks/**/*.ie.styl'],
+    libs:   ['src/vendor/**/*.css']
   },
   scripts: {
     blocks: ['src/blocks/**/*.js'],
@@ -50,6 +51,13 @@ gulp.task('common.styles', function() {
   gulp.src(paths.styles.common)
     .pipe(stylus({ use: ['nib'] }))
     .pipe(concat('common.css'))
+    .pipe(gulp.dest('build/css'));
+});
+
+gulp.task('ie.styles', function() {
+  gulp.src(paths.styles.ie)
+    .pipe(stylus({ use: ['nib'] }))
+    .pipe(concat('ie.css'))
     .pipe(gulp.dest('build/css'));
 });
 
@@ -117,6 +125,10 @@ gulp.task('app', [
   'app.scripts'
 ]);
 
+gulp.task('ie', [
+  'ie.styles'
+]);
+
 /**
  * Watchers
  */
@@ -125,23 +137,27 @@ gulp.task('watch', function() {
   var server = livereload();
   gulp.run('default');
 
-  gulp.watch('src/pages/**/*.html', function() {
+  gulp.watch(paths.pages.common, function() {
     gulp.run('pages');
   });
 
-  gulp.watch('src/common/*.styl', function() {
+  gulp.watch(paths.styles.common, function() {
     gulp.run('common.styles');
   });
 
-  gulp.watch('src/blocks/**/*.styl', function() {
+  gulp.watch(paths.styles.blocks, function() {
     gulp.run('blocks.styles');
   });
 
-  gulp.watch('src/blocks/**/*.js', function() {
+  gulp.watch(paths.scripts.blocks, function() {
     gulp.run('blocks.scripts');
   });
 
-  gulp.watch('src/app/**/*.js', function() {
+  gulp.watch(paths.scripts.app, function() {
     gulp.run('app.scripts');
   });
+
+  gulp.watch(paths.styles.ie, function() {
+    gulp.run('ie.styles');
+  })
 });
