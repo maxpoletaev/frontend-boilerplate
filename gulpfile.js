@@ -26,6 +26,9 @@ var paths = {
     blocks: ['src/blocks/**/*.js'],
     libs:   ['src/vendor/**/*.js'],
     app:    ['src/app/**/*.js']
+  },
+  images: {
+    blocks: ['src/blocks/**/img/*']
   }
 };
 
@@ -75,6 +78,14 @@ gulp.task('blocks.scripts', function() {
     .pipe(gulp.dest('build/js'));
 });
 
+gulp.task('blocks.images', function() {
+  gulp.src(paths.images.blocks)
+    .pipe(rename(function(dir, base, ext) {
+      return '../' + base + ext;
+    }))
+    .pipe(gulp.dest('build/img'));
+});
+
 gulp.task('libs.styles', function() {
   gulp.src(paths.styles.libs)
     .pipe(stylus({ use: ['nib'] }))
@@ -105,6 +116,7 @@ gulp.task('default', [
   'common.styles',
   'blocks.styles',
   'blocks.scripts',
+  'blocks.images',
   'libs.styles',
   'libs.scripts',
   'app.scripts'
@@ -113,7 +125,8 @@ gulp.task('default', [
 gulp.task('blocks', [
   'pages',
   'blocks.styles',
-  'blocks.scripts'
+  'blocks.scripts',
+  'blocks.images'
 ]);
 
 gulp.task('libs', [
