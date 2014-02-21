@@ -9,7 +9,7 @@ var fs = require('fs')
   , livereload = require('gulp-livereload');
 
 /**
- * Configuration
+ * Configuration.
  */
 
 var paths = {
@@ -37,7 +37,7 @@ var data = fs.existsSync('src/data.json')
   : {};
 
 /**
- * Tasks
+ * Common tasks.
  */
 
 gulp.task('pages', function() {
@@ -64,6 +64,10 @@ gulp.task('ie.styles', function() {
     .pipe(gulp.dest('build/css'));
 });
 
+/**
+ * Blocks tasks.
+ */
+
 gulp.task('blocks.styles', function() {
   gulp.src(paths.styles.blocks)
     .pipe(stylus({ use: ['nib'] }))
@@ -86,6 +90,11 @@ gulp.task('blocks.images', function() {
     .pipe(gulp.dest('build/img'));
 });
 
+
+/**
+ * Libs tasks.
+ */
+
 gulp.task('libs.styles', function() {
   gulp.src(paths.styles.libs)
     .pipe(stylus({ use: ['nib'] }))
@@ -100,6 +109,11 @@ gulp.task('libs.scripts', function() {
     .pipe(gulp.dest('build/js'));
 });
 
+
+/**
+ * App tasks.
+ */
+
 gulp.task('app.scripts', function() {
   gulp.src(paths.scripts.app)
     .pipe(concat('app.js'))
@@ -108,7 +122,7 @@ gulp.task('app.scripts', function() {
 });
 
 /**
- * Shortcuts
+ * Shortcuts.
  */
 
 gulp.task('default', [
@@ -143,7 +157,7 @@ gulp.task('ie', [
 ]);
 
 /**
- * Watchers
+ * Watchers.
  */
 
 gulp.task('watch', function() {
@@ -172,5 +186,5 @@ gulp.task('watch', function() {
 
   gulp.watch(paths.styles.ie, function() {
     gulp.run('ie.styles');
-  })
+  });
 });
