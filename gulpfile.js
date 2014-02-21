@@ -14,7 +14,7 @@ var fs = require('fs')
 
 var paths = {
   pages: {
-    common: ['src/pages/**/*.html']
+    common: ['src/pages/**/*.html', '!src/pages/_**/*.html']
   },
   styles: {
     common: ['src/common/*.styl',    '!src/common/*.ie.styl'],
@@ -28,7 +28,8 @@ var paths = {
     app:    ['src/app/**/*.js']
   },
   images: {
-    blocks: ['src/blocks/**/img/*']
+    blocks: ['src/blocks/**/img/*'],
+    pages:  ['src/pages/**/img/*']
   }
 };
 
@@ -40,7 +41,7 @@ var data = fs.existsSync('src/data.json')
  * Common tasks.
  */
 
-gulp.task('pages', function() {
+gulp.task('pages.html', function() {
   gulp.src(paths.pages.common)
     .pipe(ejs(data))
     .pipe(beml())
@@ -48,6 +49,14 @@ gulp.task('pages', function() {
       return '../' + base + ext;
     }))
     .pipe(gulp.dest('build/pages'));
+});
+
+gulp.task('pages.images', function() {
+  gulp.src(paths.images.pages)
+    .pipe(rename(function(dir, base, ext) {
+      return '../' + base + ext;
+    }))
+    .pipe(gulp.dest('build/pages/img'));
 });
 
 gulp.task('common.styles', function() {
@@ -126,7 +135,8 @@ gulp.task('app.scripts', function() {
  */
 
 gulp.task('default', [
-  'pages',
+  'pages.html',
+  'pages.images',
   'common.styles',
   'blocks.styles',
   'blocks.scripts',
@@ -136,8 +146,12 @@ gulp.task('default', [
   'app.scripts'
 ]);
 
+gulp.task('pages', [
+  'pages.html',
+  'pages.images'
+]);
+
 gulp.task('blocks', [
-  'pages',
   'blocks.styles',
   'blocks.scripts',
   'blocks.images'
